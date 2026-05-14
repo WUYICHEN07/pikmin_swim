@@ -3,41 +3,111 @@ from .db import get_db_connection
 
 class User:
     @staticmethod
-    def create(username):
-        conn = get_db_connection()
-        cursor = conn.cursor()
+    def create(data):
+        """新增一筆使用者記錄"""
+        conn = None
         try:
-            cursor.execute('INSERT INTO users (username) VALUES (?)', (username,))
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                'INSERT INTO users (username, total_steps, current_background) VALUES (?, ?, ?)',
+                (data.get('username'), data.get('total_steps', 0), data.get('current_background', 'ocean_default'))
+            )
             conn.commit()
-            return cursor.lastrowid
-        except sqlite3.IntegrityError:
-            return None  # Username already exists
+            user_id = cursor.lastrowid
+            return user_id
+        except sqlite3.Error as e:
+            print(f"Error creating user: {e}")
+            return None
         finally:
-            conn.close()
+            if conn:
+                conn.close()
 
     @staticmethod
-    def get_by_id(user_id):
-        conn = get_db_connection()
-        user = conn.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
-        conn.close()
-        return user
+    def get_all():
+        """取得所有使用者記錄"""
+        conn = None
+        try:
+            conn = get_db_connection()
+            users = conn.execute('SELECT * FROM users').fetchall()
+            return users
+        except sqlite3.Error as e:
+            print(f"Error getting all users: {e}")
+            return []
+        finally:
+            if conn:
+                conn.close()
 
     @staticmethod
-    def update_steps(user_id, added_steps):
-        conn = get_db_connection()
-        conn.execute(
-            'UPDATE users SET total_steps = total_steps + ? WHERE id = ?',
-            (added_steps, user_id)
-        )
-        conn.commit()
-        conn.close()
+    def get_by_id(id):
+        """取得單筆使用者記錄"""
+        conn = None
+        try:
+            conn = get_db_connection()
+            user = conn.execute('SELECT * FROM users WHERE id = ?', (id,)).fetchone()
+            return user
+        except sqlite3.Error as e:
+            print(f"Error getting user by id: {e}")
+            return None
+        finally:
+            if conn:
+                conn.close()
 
     @staticmethod
-    def update_background(user_id, background):
-        conn = get_db_connection()
-        conn.execute(
-            'UPDATE users SET current_background = ? WHERE id = ?',
-            (background, user_id)
-        )
-        conn.commit()
-        conn.close()
+    def get_by_username(username):
+        """透過使用者名稱取得記錄"""
+        conn = None
+        try:
+            conn = get_db_connection()
+            user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+            return user
+        except sqlite3.Error as e:
+            print(f"Error getting user by username: {e}")
+            return None
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def update(id, data):
+        """更新單筆使用者記錄"""
+        conn = None
+        try:
+            conn = get_db_connection()
+            fields = []
+            values = []
+            for key, value in data.items():
+                fields.append(f"{key} = ?")
+                values.append(value)
+            
+            if not fields:
+                return False
+                
+            values.append(id)
+            query = f"UPDATE users SET {', '.join(fields)} WHERE id = ?"
+            
+            conn.execute(query, tuple(values))
+            conn.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Error updating user: {e}")
+            return False
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def delete(id):
+        """刪除單筆使用者記錄"""
+        conn = None
+        try:
+            conn = get_db_connection()
+            conn.execute('DELETE FROM users WHERE id = ?', (id,))
+            conn.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Error deleting user: {e}")
+            return False
+        finally:
+            if conn:
+                conn.close()

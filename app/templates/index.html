@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+        <h1 class="mb-4 text-info fw-bold">皮克敏水下步數轉換器</h1>
+        <p class="lead mb-4">將你的水上運動轉換為皮克敏的步數！</p>
+        
+        <div class="card shadow border-0">
+            <div class="card-body p-5">
+                <h5 class="card-title mb-4">開始你的水下旅程</h5>
+                <form action="{{ url_for('main.login') }}" method="POST">
+                    <div class="mb-4">
+                        <input type="text" name="username" class="form-control form-control-lg" placeholder="請輸入你的玩家名稱" required>
+                    </div>
+                    <button type="submit" class="btn btn-info btn-lg w-100 text-white fw-bold">進入遊戲</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
