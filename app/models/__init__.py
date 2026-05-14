@@ -1,3 +1,6 @@
+# app/models/__init__.py
+from .user import User, get_db_connection
+from .swim_record import SwimRecord
 # 這是 models 的 __init__.py 檔案
 from .user import User
 from .record import SportsRecord
