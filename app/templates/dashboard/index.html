@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center mt-4 mb-5">
+    <h3>歡迎回來, {{ user.username }}！</h3>
+    <p class="lead">您目前累積的水上步數</p>
+    <div class="total-steps my-4">{{ total_steps }}</div>
+    <a href="{{ url_for('record.new_record') }}" class="btn btn-glass btn-lg px-5 rounded-pill">新增紀錄 💦</a>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <!-- 主題設定卡片 -->
+        <div class="glass-card">
+            <h4>佈景主題設定</h4>
+            <p class="small text-white-50">選擇您喜歡的遊戲背景</p>
+            <form action="{{ url_for('dashboard.update_theme') }}" method="POST">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="theme_name" value="ocean" id="themeOcean" {% if user.theme_preference == 'ocean' %}checked{% endif %}>
+                    <label class="form-check-label" for="themeOcean">深海藍 Ocean</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="theme_name" value="forest" id="themeForest" {% if user.theme_preference == 'forest' %}checked{% endif %}>
+                    <label class="form-check-label" for="themeForest">皮克敏綠 Forest</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="theme_name" value="sunset" id="themeSunset" {% if user.theme_preference == 'sunset' %}checked{% endif %}>
+                    <label class="form-check-label" for="themeSunset">夕陽橘 Sunset</label>
+                </div>
+                <button type="submit" class="btn btn-sm btn-glass w-100">儲存主題</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <!-- 歷史紀錄列表 -->
+        <div class="glass-card">
+            <h4 class="mb-4">歷史運動紀錄</h4>
+            {% if records %}
+                <div class="table-responsive">
+                    <table class="table table-borderless text-white align-middle">
+                        <thead style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                            <tr>
+                                <th>時間</th>
+                                <th>運動類型</th>
+                                <th>距離 (m)</th>
+                                <th>時長 (min)</th>
+                                <th>獲得步數</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <td>{{ record.record_date[:10] }}</td>
+                                <td>
+                                    {% if record.sport_type == 'freestyle' %}自由式
+                                    {% elif record.sport_type == 'breaststroke' %}蛙式
+                                    {% elif record.sport_type == 'butterfly' %}蝶式
+                                    {% elif record.sport_type == 'backstroke' %}仰式
+                                    {% else %}{{ record.sport_type }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ record.distance_m }}</td>
+                                <td>{{ record.duration_min }}</td>
+                                <td class="fw-bold text-warning">+{{ record.steps }}</td>
+                                <td>
+                                    <form action="{{ url_for('record.delete_record', record_id=record.id) }}" method="POST" onsubmit="return confirm('確定要刪除這筆紀錄嗎？');">
+                                        <button type="submit" class="btn btn-sm btn-outline-light rounded-pill border-0">刪除</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-center text-white-50 my-5">目前還沒有任何運動紀錄，趕快去游一波吧！</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
