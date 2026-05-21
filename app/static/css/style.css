@@ -1,0 +1,113 @@
+:root {
+  --font-main: 'Inter', sans-serif;
+  --font-accent: 'Outfit', sans-serif;
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+body {
+  font-family: var(--font-main);
+  min-height: 100vh;
+  margin: 0;
+  color: white;
+  transition: background 0.5s ease;
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+/* Themes */
+body.theme-default {
+  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #0f2027);
+}
+
+body.theme-ocean {
+  background: linear-gradient(-45deg, #004e92, #000428, #004e92);
+}
+
+body.theme-forest {
+  background: linear-gradient(-45deg, #134e5e, #71b280, #134e5e);
+}
+
+body.theme-sunset {
+  background: linear-gradient(-45deg, #f12711, #f5af19, #f12711);
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  padding: 2rem;
+  color: white;
+}
+
+.glass-nav {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand, .nav-link {
+  color: white !important;
+  font-family: var(--font-accent);
+  font-weight: 600;
+}
+
+/* Typography & Animations */
+h1, h2, h3 {
+  font-family: var(--font-accent);
+}
+
+.total-steps {
+  font-size: 5rem;
+  font-weight: 800;
+  text-shadow: 0 0 20px rgba(255,255,255,0.5);
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Inputs & Buttons */
+.form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
+  color: white;
+  box-shadow: none;
+}
+
+.form-control::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+  color: white;
+}
