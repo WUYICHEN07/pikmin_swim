@@ -1,3 +1,12 @@
+from flask import Blueprint
+
+# 初始化 Blueprints
+api_bp = Blueprint('api', __name__, url_prefix='/api/v1')
+main_bp = Blueprint('main', __name__)
+auth_bp = Blueprint('auth', __name__)
+
+# 引入路由以便註冊 (這裡放到底部避免 circular import)
+from . import api, main, auth
 from flask import Blueprint, render_template, request, redirect, url_for, session
 
 # 此檔案目前僅供初始化模組使用，可由 app.py 匯入 Blueprint
