@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h3 class="mb-4 text-info fw-bold">運動歷史紀錄</h3>
+        
+        {% if activities %}
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover bg-white mb-0">
+                <thead class="table-info">
+                    <tr>
+                        <th class="py-3">日期</th>
+                        <th class="py-3">運動類型</th>
+                        <th class="py-3">時間 (分鐘)</th>
+                        <th class="py-3">距離 (公尺)</th>
+                        <th class="py-3">獲得步數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                    <tr>
+                        <td class="py-3">{{ activity['created_at'].split(' ')[0] if activity['created_at'] else '未知' }}</td>
+                        <td class="py-3">
+                            {% if activity['sport_type'] == 'swimming' %}<span class="badge bg-primary">游泳</span>
+                            {% elif activity['sport_type'] == 'water_polo' %}<span class="badge bg-success">水球</span>
+                            {% elif activity['sport_type'] == 'surfing' %}<span class="badge bg-info text-dark">衝浪</span>
+                            {% elif activity['sport_type'] == 'diving' %}<span class="badge bg-dark">潛水</span>
+                            {% else %}<span class="badge bg-secondary">{{ activity['sport_type'] }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-3">{{ activity['duration'] }}</td>
+                        <td class="py-3">{{ activity['distance'] or '-' }}</td>
+                        <td class="py-3 text-success fw-bold fs-5">+{{ activity['steps_earned'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="card border-0 shadow-sm mt-3">
+            <div class="card-body text-center p-5">
+                <h5 class="text-muted mb-3">目前還沒有任何運動紀錄</h5>
+                <a href="{{ url_for('main.record_page') }}" class="btn btn-info text-white fw-bold">立即新增第一筆！</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

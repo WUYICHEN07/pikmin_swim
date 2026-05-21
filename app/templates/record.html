@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 mt-3">
+            <div class="card-header bg-info text-white p-3">
+                <h4 class="mb-0 fw-bold">新增水上運動紀錄</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('main.create_record') }}" method="POST">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-secondary">運動類型</label>
+                        <select name="sport_type" class="form-select form-select-lg" required>
+                            <option value="swimming">游泳</option>
+                            <option value="water_polo">水球</option>
+                            <option value="surfing">衝浪</option>
+                            <option value="diving">潛水</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-secondary">距離 (公尺) <span class="text-muted fw-normal fs-6">- 選填</span></label>
+                        <input type="number" name="distance" class="form-control form-control-lg" placeholder="例如：1000">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-secondary">運動時間 (分鐘)</label>
+                        <input type="number" name="duration" class="form-control form-control-lg" required min="1" placeholder="例如：30">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-info btn-lg text-white fw-bold">轉換為步數！</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

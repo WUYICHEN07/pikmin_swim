@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-12 text-center mb-4">
+        <h2 class="display-5 text-info fw-bold mb-4">{{ user['username'] }} 的水下世界</h2>
+        
+        <div class="card bg-primary text-white shadow border-0" style="border-radius: 20px;">
+            <div class="card-body py-5">
+                <h3>目前累積步數</h3>
+                <h1 class="display-1 fw-bold">{{ user['total_steps'] }}</h1>
+                <p class="lead mt-3">繼續保持水上運動，培育更多的皮克敏吧！</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4">
+                <h4 class="text-info fw-bold mb-3">更換水下背景</h4>
+                <p class="text-muted">選擇一個你喜歡的 AI 生成海洋場景，未來的版本將會套用到畫面中！</p>
+                <form action="{{ url_for('main.update_background') }}" method="POST">
+                    <select name="background_theme" class="form-select mb-4">
+                        <option value="ocean_default" {% if user['current_background'] == 'ocean_default' %}selected{% endif %}>預設深海</option>
+                        <option value="coral_reef" {% if user['current_background'] == 'coral_reef' %}selected{% endif %}>絢麗珊瑚礁</option>
+                        <option value="kelp_forest" {% if user['current_background'] == 'kelp_forest' %}selected{% endif %}>神秘海帶林</option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-info w-100 fw-bold">套用背景</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm text-center border-0">
+            <div class="card-body p-4 d-flex flex-column justify-content-center">
+                <h4 class="text-info fw-bold mb-4">快速導覽</h4>
+                <div class="d-grid gap-3">
+                    <a href="{{ url_for('main.record_page') }}" class="btn btn-info btn-lg text-white fw-bold">記錄新運動</a>
+                    <a href="{{ url_for('main.history') }}" class="btn btn-outline-secondary btn-lg">查看歷史紀錄</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

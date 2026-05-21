@@ -1,3 +1,4 @@
+# Flask app initialization module
 import os
 from flask import Flask
 
